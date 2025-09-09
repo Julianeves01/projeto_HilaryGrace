@@ -8,6 +8,9 @@ CREATE TABLE joias (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Adicionar coluna de imagem à tabela joias
+ALTER TABLE joias ADD COLUMN imagem_url VARCHAR(500);
+
 CREATE TABLE personalizacoes (
     id SERIAL PRIMARY KEY,
     joia_id INT,
@@ -17,6 +20,9 @@ CREATE TABLE personalizacoes (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (joia_id) REFERENCES joias(id) ON DELETE CASCADE
 );
+
+-- Adicionar coluna de imagem à tabela personalizacoes
+ALTER TABLE personalizacoes ADD COLUMN imagem_url VARCHAR(500);
 
 INSERT INTO joias (nome, descricao, preco) VALUES
 ('Anel Clássico', 'Anel tradicional em ouro 18k com design minimalista', 1200.00),

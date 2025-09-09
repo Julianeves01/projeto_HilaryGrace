@@ -22,11 +22,11 @@ class Joia {
         }
     }
 
-    static async create(nome, descricao, preco) {
+    static async create(nome, descricao, preco, imagem_url = null) {
         try {
             const result = await pool.query(
-                'INSERT INTO joias (nome, descricao, preco) VALUES ($1, $2, $3) RETURNING *',
-                [nome, descricao, preco]
+                'INSERT INTO joias (nome, descricao, preco, imagem_url) VALUES ($1, $2, $3, $4) RETURNING *',
+                [nome, descricao, preco, imagem_url]
             );
             return result.rows[0];
         } catch (error) {
@@ -34,11 +34,11 @@ class Joia {
         }
     }
 
-    static async update(id, nome, descricao, preco) {
+    static async update(id, nome, descricao, preco, imagem_url = null) {
         try {
             const result = await pool.query(
-                'UPDATE joias SET nome = $1, descricao = $2, preco = $3 WHERE id = $4 RETURNING *',
-                [nome, descricao, preco, id]
+                'UPDATE joias SET nome = $1, descricao = $2, preco = $3, imagem_url = $4 WHERE id = $5 RETURNING *',
+                [nome, descricao, preco, imagem_url, id]
             );
             return result.rows[0];
         } catch (error) {

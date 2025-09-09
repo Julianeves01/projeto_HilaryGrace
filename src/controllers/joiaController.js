@@ -25,10 +25,10 @@ exports.getById = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
-        const { nome, descricao, preco } = req.body;
+        const { nome, descricao, preco, imagem_url } = req.body;
         if (!nome || preco == null) return res.status(400).json({ error: 'nome e preco são obrigatórios' });
 
-        const joia = await Joia.create(nome, descricao, preco);
+        const joia = await Joia.create(nome, descricao, preco, imagem_url);
         res.status(201).json(joia);
     } catch (err) {
         console.error(err);
@@ -39,8 +39,8 @@ exports.create = async (req, res) => {
 exports.update = async (req, res) => {
     try {
         const { id } = req.params;
-        const { nome, descricao, preco } = req.body;
-        const joia = await Joia.update(id, nome, descricao, preco);
+        const { nome, descricao, preco, imagem_url } = req.body;
+        const joia = await Joia.update(id, nome, descricao, preco, imagem_url);
         if (!joia) return res.status(404).json({ error: 'Joia não encontrada' });
         res.json(joia);
     } catch (err) {

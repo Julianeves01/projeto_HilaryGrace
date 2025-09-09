@@ -25,10 +25,10 @@ exports.getById = async (req, res) => {
 
 exports.create = async (req, res) => {
     try {
-        const { joia_id, metal, pedra, formato } = req.body;
+        const { joia_id, metal, pedra, formato, imagem_url } = req.body;
         if (!joia_id) return res.status(400).json({ error: 'joia_id é obrigatório' });
 
-        const personalizacao = await Personalizacao.create(joia_id, metal, pedra, formato);
+        const personalizacao = await Personalizacao.create(joia_id, metal, pedra, formato, imagem_url);
         res.status(201).json(personalizacao);
     } catch (err) {
         console.error(err);
@@ -39,8 +39,8 @@ exports.create = async (req, res) => {
 exports.update = async (req, res) => {
     try {
         const { id } = req.params;
-        const { joia_id, metal, pedra, formato } = req.body;
-        const personalizacao = await Personalizacao.update(id, joia_id, metal, pedra, formato);
+        const { joia_id, metal, pedra, formato, imagem_url } = req.body;
+        const personalizacao = await Personalizacao.update(id, joia_id, metal, pedra, formato, imagem_url);
         if (!personalizacao) return res.status(404).json({ error: 'Personalização não encontrada' });
         res.json(personalizacao);
     } catch (err) {

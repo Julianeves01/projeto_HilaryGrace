@@ -41,11 +41,11 @@ class Personalizacao {
         }
     }
 
-    static async create(joiaId, metal, pedra, formato) {
+    static async create(joiaId, metal, pedra, formato, imagem_url = null) {
         try {
             const result = await pool.query(
-                'INSERT INTO personalizacoes (joia_id, metal, pedra, formato) VALUES ($1, $2, $3, $4) RETURNING *',
-                [joiaId, metal, pedra, formato]
+                'INSERT INTO personalizacoes (joia_id, metal, pedra, formato, imagem_url) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+                [joiaId, metal, pedra, formato, imagem_url]
             );
             return result.rows[0];
         } catch (error) {
@@ -53,11 +53,11 @@ class Personalizacao {
         }
     }
 
-    static async update(id, joiaId, metal, pedra, formato) {
+    static async update(id, joiaId, metal, pedra, formato, imagem_url = null) {
         try {
             const result = await pool.query(
-                'UPDATE personalizacoes SET joia_id = $1, metal = $2, pedra = $3, formato = $4 WHERE id = $5 RETURNING *',
-                [joiaId, metal, pedra, formato, id]
+                'UPDATE personalizacoes SET joia_id = $1, metal = $2, pedra = $3, formato = $4, imagem_url = $5 WHERE id = $6 RETURNING *',
+                [joiaId, metal, pedra, formato, imagem_url, id]
             );
             return result.rows[0];
         } catch (error) {
