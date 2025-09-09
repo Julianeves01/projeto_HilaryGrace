@@ -1,5 +1,7 @@
+CREATE DATABASE joalheria2;
+
 CREATE TABLE joias (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     descricao TEXT,
     preco DECIMAL(10,2) NOT NULL,
@@ -7,7 +9,7 @@ CREATE TABLE joias (
 );
 
 CREATE TABLE personalizacoes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     joia_id INT,
     metal VARCHAR(50),
     pedra VARCHAR(50),

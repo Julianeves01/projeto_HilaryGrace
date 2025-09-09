@@ -1,13 +1,25 @@
 
-const pool = require('../models/db');
+const Personalizacao = require('../models/Personalizacao');
 
 exports.getAll = async (req, res) => {
     try {
-        const result = await pool.query('SELECT * FROM personalizacoes ORDER BY id');
-        res.json(result.rows);
+        const personalizacoes = await Personalizacao.findAll();
+        res.json(personalizacoes);
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Erro ao buscar personalizações' });
+    }
+};
+
+exports.getById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const personalizacao = await Personalizacao.findById(id);
+        if (!personalizacao) return res.status(404).json({ error: 'Personalização não encontrada' });
+        res.json(personalizacao);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Erro ao buscar personalização' });
     }
 };
 
@@ -16,21 +28,32 @@ exports.create = async (req, res) => {
         const { joia_id, metal, pedra, formato } = req.body;
         if (!joia_id) return res.status(400).json({ error: 'joia_id é obrigatório' });
 
-        const result = await pool.query(
-            'INSERT INTO personalizacoes (joia_id, metal, pedra, formato) VALUES ($1, $2, $3, $4) RETURNING *',
-            [joia_id, metal, pedra, formato]
-        );
-        res.status(201).json(result.rows[0]);
+        const personalizacao = await Personalizacao.create(joia_id, metal, pedra, formato);
+        res.status(201).json(personalizacao);
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Erro ao criar personalização' });
     }
 };
 
+exports.update = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { joia_id, metal, pedra, formato } = req.body;
+        const personalizacao = await Personalizacao.update(id, joia_id, metal, pedra, formato);
+        if (!personalizacao) return res.status(404).json({ error: 'Personalização não encontrada' });
+        res.json(personalizacao);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Erro ao atualizar personalização' });
+    }
+};
+
 exports.remove = async (req, res) => {
     try {
         const { id } = req.params;
-        await pool.query('DELETE FROM personalizacoes WHERE id=$1', [id]);
+        const personalizacao = await Personalizacao.delete(id);
+        if (!personalizacao) return res.status(404).json({ error: 'Personalização não encontrada' });
         res.json({ message: 'Personalização removida com sucesso' });
     } catch (err) {
         console.error(err);
