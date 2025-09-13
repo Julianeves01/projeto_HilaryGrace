@@ -1,9 +1,9 @@
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
 
-import joiaRoutes from './src/routes/joiaRoutes.js';
-import personalizacaoRoutes from './src/routes/personalizacaoRoutes.js';
+const express = require('express');
+const cors = require('cors');
+const dotenv = require('dotenv');
+const joiaRoutes = require('./src/routes/joiaRoutes');
+const personalizacaoRoutes = require('./src/routes/personalizacaoRoutes');
 
 dotenv.config();
 
