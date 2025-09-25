@@ -1,4 +1,4 @@
-CREATE DATABASE joalheria02;
+CREATE DATABASE joalheria03;
 
 CREATE TABLE usuarias (
     id SERIAL PRIMARY KEY,
