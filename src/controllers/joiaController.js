@@ -1,62 +1,44 @@
+const pool = require("../config/database");
 
-const Joia = require('../models/Joia');
-
-exports.getAll = async (req, res) => {
+exports.criarJoia = async (req, res) => {
     try {
-        const joias = await Joia.findAll();
-        res.json(joias);
+        const { nome, descricao, preco, usuaria_id } = req.body;
+        const result = await pool.query(
+            "INSERT INTO joias (nome, descricao, preco, usuaria_id) VALUES($1, $2, $3, $4) RETURNING *",
+            [nome, descricao, preco, usuaria_id]
+        );
+        res.json(result.rows[0]);
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Erro ao buscar joias' });
+        res.status(500).json({ error: err.message });
     }
 };
 
-exports.getById = async (req, res) => {
+exports.listarJoias = async (req, res) => {
+    try {
+        const result = await pool.query(`
+            SELECT j.*, u.nome AS vendedora
+            FROM joias j
+            JOIN usuarias u ON j.usuaria_id = u.id
+            ORDER BY j.created_at DESC
+        `);
+        res.json(result.rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+exports.detalharJoia = async (req, res) => {
     try {
         const { id } = req.params;
-        const joia = await Joia.findById(id);
-        if (!joia) return res.status(404).json({ error: 'Joia não encontrada' });
-        res.json(joia);
+        const result = await pool.query(
+            `SELECT j.*, u.nome AS vendedora, u.email
+            FROM joias j
+            JOIN usuarias u ON j.usuaria_id = u.id
+            WHERE j.id = $1`,
+            [id]
+        );
+        res.json(result.rows[0]);
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Erro ao buscar joia' });
-    }
-};
-
-exports.create = async (req, res) => {
-    try {
-        const { nome, descricao, preco, imagem_url } = req.body;
-        if (!nome || preco == null) return res.status(400).json({ error: 'nome e preco são obrigatórios' });
-
-        const joia = await Joia.create(nome, descricao, preco, imagem_url);
-        res.status(201).json(joia);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Erro ao criar joia' });
-    }
-};
-
-exports.update = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const { nome, descricao, preco, imagem_url } = req.body;
-        const joia = await Joia.update(id, nome, descricao, preco, imagem_url);
-        if (!joia) return res.status(404).json({ error: 'Joia não encontrada' });
-        res.json(joia);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Erro ao atualizar joia' });
-    }
-};
-
-exports.remove = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const joia = await Joia.delete(id);
-        if (!joia) return res.status(404).json({ error: 'Joia não encontrada' });
-        res.json({ message: 'Joia removida com sucesso' });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Erro ao remover joia' });
+        res.status(500).json({ error: err.message });
     }
 };
