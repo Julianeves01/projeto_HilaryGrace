@@ -3,10 +3,8 @@ const router = express.Router();
 const joiaController = require('../controllers/joiaController');
 
 
-router.get('/', joiaController.getAll);
-router.get('/:id', joiaController.getById);
-router.post('/', joiaController.create);
-router.put('/:id', joiaController.update);
-router.delete('/:id', joiaController.remove);
+router.post("/", joiaController.criarJoia);
+router.get("/", joiaController.listarJoias);
+router.get("/:id", joiaController.detalharJoia);
 
 module.exports = router;
