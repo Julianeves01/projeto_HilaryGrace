@@ -59,7 +59,7 @@ INSERT INTO joias (nome, descricao, preco, usuaria_id, status) VALUES
 ('Tornozeleira de Prata', 'Tornozeleira delicada em prata 925', 65.00,
 5, 'disponivel');
 
--- Inserir vendas
+
 INSERT INTO vendas (joia_id, comprador_nome, comprador_email) VALUES
 (4, 'Roberto Alves', 'roberto.alves@email.com'),
 (7, 'Camila Ferreira', 'camila.ferreira@email.com');
