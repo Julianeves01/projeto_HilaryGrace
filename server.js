@@ -1,34 +1,24 @@
-
-const express = require('express');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const joiaRoutes = require('./src/routes/joiaRoutes');
-const personalizacaoRoutes = require('./src/routes/personalizacaoRoutes');
-
-dotenv.config();
-
+const express = require("express");
+const cors = require("cors");
+require('dotenv').config();
 const app = express();
+const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
 
-console.log('PORT:', process.env.PORT);
+const usuariaRoutes = require("./src/routes/usuariaRoutes");
+const joiaRoutes = require("./src/routes/joiaRoutes");
+const vendaRoutes = require("./src/routes/vendaRoutes");
 
-app.use('/api/jewels', joiaRoutes);
-app.use('/api/customizations', personalizacaoRoutes);
+app.use("/api/usuarias", usuariaRoutes);
+app.use("/api/joias", joiaRoutes);
+app.use("/api/vendas", vendaRoutes);
 
-app.get('/', (_, res) => res.send('Hilary Grace API running...'));
-
-app.use((err, _, res, __) => {
-    console.error(err.stack);
-    res.status(500).json({ error: 'Internal error' });
+app.get("/", (req, res) => {
+res.send("API Hilary Grace rodando ✨💎");
 });
 
-// Adicionar o listen para iniciar o servidor
-const PORT = process.env.PORT || 3000;
-
 app.listen(PORT, () => {
-    console.log(`🎀 Servidor rodando em http://localhost:${PORT}`);
-    console.log(`💎 API Jewels: http://localhost:${PORT}/api/jewels`);
-    console.log(`✨ API Customizations: http://localhost:${PORT}/api/customizations`);
+console.log(`Servidor rodando na porta ${PORT}`);
 });
