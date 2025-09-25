@@ -1,69 +1,65 @@
-CREATE DATABASE joalheria2;
+CREATE DATABASE joalheria02;
+
+CREATE TABLE usuarias (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
 CREATE TABLE joias (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     descricao TEXT,
     preco DECIMAL(10,2) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    usuaria_id INT NOT NULL,
+    status VARCHAR(20) DEFAULT 'disponivel',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuaria_id) REFERENCES usuarias(id) ON DELETE CASCADE
 );
 
--- Adicionar coluna de imagem à tabela joias
-ALTER TABLE joias ADD COLUMN imagem_url VARCHAR(500);
-
-CREATE TABLE personalizacoes (
+CREATE TABLE vendas (
     id SERIAL PRIMARY KEY,
-    joia_id INT,
-    metal VARCHAR(50),
-    pedra VARCHAR(50),
-    formato VARCHAR(50),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    joia_id INT NOT NULL,
+    comprador_nome VARCHAR(100),
+    comprador_email VARCHAR(100),
+    data_venda TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (joia_id) REFERENCES joias(id) ON DELETE CASCADE
 );
 
--- Adicionar coluna de imagem à tabela personalizacoes
-ALTER TABLE personalizacoes ADD COLUMN imagem_url VARCHAR(500);
+-- Inserir usuárias
+INSERT INTO usuarias (nome, email, senha) VALUES
+('Ana Silva', 'ana.silva@email.com', '$2b$10$hash1'),
+('Maria Santos', 'maria.santos@email.com', '$2b$10$hash2'),
+('Carla Oliveira', 'carla.oliveira@email.com', '$2b$10$hash3'),
+('Julia Costa', 'julia.costa@email.com', '$2b$10$hash4'),
+('Fernanda Lima', 'fernanda.lima@email.com', '$2b$10$hash5');
 
-INSERT INTO joias (nome, descricao, preco) VALUES
-('Anel Clássico', 'Anel tradicional em ouro 18k com design minimalista', 1200.00),
-('Brinco Glamour', 'Brinco elegante com pedras de safira azul', 850.00),
-('Colar Elegance', 'Colar sofisticado com pingente de esmeralda', 1400.00),
-('Pulseira Charm', 'Pulseira com pingentes delicados e acabamento em prata', 600.00),
-('Anel Royal', 'Anel exclusivo em platina com diamantes cravejados', 2500.00),
-('Brinco Lux', 'Brinco luxuoso com rubis intensos', 1800.00),
-('Colar Star', 'Colar com pedras de topázio e corrente prateada', 950.00),
-('Pulseira Glow', 'Pulseira moderna com toque de ouro rosé', 1300.00),
-('Anel Dreams', 'Anel com pedra de opala e aro em prata', 700.00),
-('Brinco Pearl', 'Brinco clássico com pérolas naturais', 1600.00),
-('Colar Moon', 'Colar com quartzo rosa e design romântico', 750.00),
-('Pulseira Shine', 'Pulseira com diamantes para ocasiões especiais', 2000.00),
-('Anel Chic', 'Anel com safira azul e toque rosé', 1500.00),
-('Brinco Deluxe', 'Brinco sofisticado em platina com rubis', 2700.00),
-('Colar Love', 'Colar delicado com turmalina verde', 890.00),
-('Pulseira Classic', 'Pulseira dourada com pedra esmeralda', 2100.00),
-('Anel Infinity', 'Anel exclusivo com diamante central brilhante', 3000.00),
-('Brinco Soft', 'Brinco rosé com pedra ametista', 1350.00),
-('Colar Heart', 'Colar com pingente de coração em opala', 770.00),
-('Pulseira Dream', 'Pulseira com safiras em platina', 2800.00);
+-- Inserir joias
+INSERT INTO joias (nome, descricao, preco, usuaria_id, status) VALUES
+('Anel de Ouro 18k', 'Anel em ouro 18k com pedra de zircônia', 450.00,
+1, 'disponivel'),
+('Colar de Prata', 'Colar delicado em prata 925', 120.00, 1,
+'disponivel'),
+('Brincos de Diamante', 'Par de brincos com diamantes naturais',
+890.00, 2, 'disponivel'),
+('Pulseira de Ouro', 'Pulseira em ouro 18k modelo cartier', 320.00, 2,
+'vendida'),
+('Anel de Prata', 'Anel em prata com ametista', 85.00, 3,
+'disponivel'),
+('Colar de Ouro Branco', 'Colar em ouro branco 18k', 650.00, 3,
+'disponivel'),
+('Brincos de Pérola', 'Brincos com pérolas cultivadas', 180.00, 4,
+'vendida'),
+('Pingente de Esmeralda', 'Pingente em ouro com esmeralda natural',
+1200.00, 4, 'disponivel'),
+('Aliança de Ouro', 'Aliança tradicional em ouro 18k', 280.00, 5,
+'disponivel'),
+('Tornozeleira de Prata', 'Tornozeleira delicada em prata 925', 65.00,
+5, 'disponivel');
 
-INSERT INTO personalizacoes (joia_id, metal, pedra, formato) VALUES
-(1, 'Ouro', 'Diamante', 'Redondo'),
-(2, 'Prata', 'Safira', 'Oval'),
-(3, 'Ouro Rosé', 'Esmeralda', 'Coração'),
-(4, 'Prata', 'Ametista', 'Quadrado'),
-(5, 'Platina', 'Diamante', 'Redondo'),
-(6, 'Ouro', 'Rubi', 'Gota'),
-(7, 'Prata', 'Topázio', 'Oval'),
-(8, 'Ouro Rosé', 'Turmalina', 'Coração'),
-(9, 'Prata', 'Opala', 'Redondo'),
-(10, 'Ouro', 'Pérola', 'Redondo'),
-(11, 'Prata', 'Quartzo Rosa', 'Oval'),
-(12, 'Ouro', 'Diamante', 'Redondo'),
-(13, 'Ouro Rosé', 'Safira', 'Quadrado'),
-(14, 'Platina', 'Rubi', 'Oval'),
-(15, 'Prata', 'Turmalina', 'Coração'),
-(16, 'Ouro', 'Esmeralda', 'Redondo'),
-(17, 'Ouro', 'Diamante', 'Redondo'),
-(18, 'Ouro Rosé', 'Ametista', 'Gota'),
-(19, 'Prata', 'Opala', 'Oval'),
-(20, 'Platina', 'Safira', 'Coração');
+-- Inserir vendas
+INSERT INTO vendas (joia_id, comprador_nome, comprador_email) VALUES
+(4, 'Roberto Alves', 'roberto.alves@email.com'),
+(7, 'Camila Ferreira', 'camila.ferreira@email.com');
