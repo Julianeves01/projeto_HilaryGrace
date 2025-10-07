@@ -212,19 +212,7 @@ Este comando instalará:
 #### 2.3 - Crie o arquivo .env.local
 
 Na pasta raiz do front-end, crie um arquivo chamado `.env.local`:
-
-```bash
-# Linux/Mac
-touch .env.local
-
-# Windows (PowerShell)
-New-Item .env.local -ItemType File
-
-# Windows (CMD)
-type nul > .env.local
-```
-
-Adicione este conteúdo ao arquivo `.env.local`:
+Adicione este conteúdo ao arquivo:
 
 ```env
 NEXT_PUBLIC_API_BASE_URL=http://localhost:3000
